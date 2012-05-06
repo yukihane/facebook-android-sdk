@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -121,7 +122,14 @@ public class FbDialog extends Dialog {
         mWebView.loadUrl(mUrl);
         mWebView.setLayoutParams(FILL);
         mWebView.setVisibility(View.INVISIBLE);
-        
+
+        // When user-agent contains "Galaxy Nexus", redirected to error page,
+        // "Display=wap dialogs have been deprecated.".
+        final WebSettings settings = mWebView.getSettings();
+        final String origUA = settings.getUserAgentString();
+        final String modUA = origUA.replace("Galaxy Nexus", "Galaxy Xexus");
+        settings.setUserAgentString(modUA);
+
         webViewContainer.setPadding(margin, margin, margin, margin);
         webViewContainer.addView(mWebView);
         mContent.addView(webViewContainer);
